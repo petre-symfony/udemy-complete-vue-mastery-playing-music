@@ -10,8 +10,8 @@
 				<i class="fas fa-play"></i>
 			</button>
 			<div class="z-50 text-left ml-8">
-				<div class="text-3xl font-bold">Song Title</div>
-				<div>Blues Rock</div>
+				<div class="text-3xl font-bold">{{ song.modified_name }}</div>
+				<div>{{ song.genre }}</div>
 			</div>
 		</div>
 	</section>
@@ -116,8 +116,24 @@
 </template>
 
 <script>
+import { songsCollection } from "@/includes/firebase";
 export default {
-	name: "Song"
+	name: "Song",
+	data() {
+		return {
+			song: {}
+		}
+	},
+	async created() {
+		const docSnapshot = await songsCollection.doc(this.$route.params.id).get();
+
+		if (!docSnapshot.exists) {
+			this.$router.push({ name: 'home' });
+			return;
+		}
+
+		this.song = docSnapshot.data();
+	}
 }
 </script>
 
