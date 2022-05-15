@@ -28,7 +28,7 @@
 				>
 					{{ comment_alert_message }}
 				</div>
-				<vee-form :validation-schema="schema" @submit="addComment">
+				<vee-form :validation-schema="schema" @submit="addComment" v-if="userLoggedIn">
           <vee-field as="textarea" name="comment"
 						class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition
               duration-500 focus:outline-none focus:border-black rounded mb-4"
@@ -129,6 +129,8 @@
 
 <script>
 import { songsCollection, auth, commentsCollection } from "@/includes/firebase";
+import { mapState } from "vuex";
+
 export default {
 	name: "Song",
 	data() {
@@ -142,6 +144,9 @@ export default {
 			comment_alert_variant: 'bg-blue-500',
 			comment_alert_message: 'Please wait! Your comment is being submitted'
 		}
+	},
+	computed: {
+		...mapState(['userLoggedIn'])
 	},
 	async created() {
 		const docSnapshot = await songsCollection.doc(this.$route.params.id).get();
