@@ -154,7 +154,7 @@ export default {
 		this.song = docSnapshot.data();
 	},
 	methods: {
-		async addComment(values) {
+		async addComment(values, { resetForm }) {
 			this.comment_in_submission = true;
 			this.comment_show_alert = true;
 			this.comment_alert_variant = 'bg-blue-500';
@@ -171,6 +171,8 @@ export default {
 			this.comment_in_submission = false;
 			this.comment_alert_variant = 'bg-green-500';
 			this.comment_alert_message = "Comment added!";
+
+			resetForm();
 		}
 	}
 }
