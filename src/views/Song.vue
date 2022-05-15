@@ -88,7 +88,10 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['userLoggedIn'])
+		...mapState(['userLoggedIn']),
+		sortedComments() {
+			return this.comments.sort();
+		}
 	},
 	async created() {
 		const docSnapshot = await songsCollection.doc(this.$route.params.id).get();
@@ -115,7 +118,11 @@ export default {
 				name: auth.currentUser.displayName,
 				uid: auth.currentUser.uid
 			}
+
 			await commentsCollection.add(comment);
+
+			this.getComments();
+
 			this.comment_in_submission = false;
 			this.comment_alert_variant = 'bg-green-500';
 			this.comment_alert_message = "Comment added!";
